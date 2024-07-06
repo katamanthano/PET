@@ -5,24 +5,46 @@ let selectedOptions = {
     subToppings: null
 };
 
-// Charger les combos depuis le fichier JSON
-let pizzaCombos = {};
+let pizzaCombos = {}; // Contiendra les combos chargés depuis le fichier JSON
 
 fetch('pizza_options.json')
     .then(response => response.json())
     .then(data => {
-        pizzaCombos = data.combos.reduce((acc, combo) => {
-            const key = `${combo.pate}-${combo.sauce}-${combo.toppings}`;
-            acc[key] = combo.name;
-            if (combo.subToppings) {
-                Object.keys(combo.subToppings).forEach(sub => {
-                    acc[`${key}-${sub}`] = combo.subToppings[sub];
-                });
-            }
-            return acc;
-        }, {});
+        pizzaCombos = data.combos;
+        generateMatrix(); // Appel pour générer la matrice basée sur les données JSON
     })
     .catch(error => console.error('Erreur lors du chargement du fichier JSON', error));
+
+function generateMatrix() {
+    const tbody = document.getElementById('matrixBody');
+    tbody.innerHTML = ''; // Nettoyer le contenu existant
+
+    pizzaCombos.forEach(combo => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td onclick="selectOption('pate', '${combo.pate}', this)">${combo.pate}</td>
+            <td onclick="selectOption('sauce', '${combo.sauce}', this)">${combo.sauce}</td>
+            <td onclick="selectOption('toppings', '${combo.toppings}', this)">${combo.toppings}</td>
+        `;
+        tbody.appendChild(row);
+
+        // Ajouter les sous-options si elles existent
+        if (combo.subToppings) {
+            const subRow = document.createElement('tr');
+            subRow.style.display = 'none'; // Les sous-options sont cachées par défaut
+            subRow.innerHTML = `
+                <td colspan="3">
+                    <div class="sub-techniques">
+                        ${Object.keys(combo.subToppings).map(sub => `
+                            <div onclick="selectSubOption('toppings', '${combo.toppings}', '${sub}', event)">${sub}</div>
+                        `).join('')}
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(subRow);
+        }
+    });
+}
 
 function selectOption(category, value, element) {
     const prevSelected = document.querySelector(`td.selected[data-category="${category}"]`);
@@ -61,8 +83,15 @@ function getPizzaName() {
     }
 
     if (pate && sauce && toppings) {
-        const pizzaName = pizzaCombos[combo] || "Pizza inconnue";
-        document.getElementById("pizzaName").innerText = pizzaName;
+        const pizzaName = pizzaCombos.find(item => {
+            if (item.subToppings) {
+                return item.pate === pate && item.sauce === sauce && item.toppings === toppings && item.subToppings[subToppings];
+            } else {
+                return item.pate === pate && item.sauce === sauce && item.toppings === toppings;
+            }
+        });
+
+        document.getElementById("pizzaName").innerText = pizzaName ? pizzaName.name : "Pizza inconnue";
     } else {
         document.getElementById("pizzaName").innerText = "Veuillez sélectionner une option pour chaque catégorie.";
     }
