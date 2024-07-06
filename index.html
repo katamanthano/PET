@@ -38,16 +38,31 @@
             margin-top: 20px;
             text-align: center;
         }
-        .pizza-list {
-            list-style: none;
-            padding: 0;
-            text-align: left;
+        .sub-techniques {
+            display: none;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            z-index: 1;
+            margin-top: 10px;
         }
-        .pizza-list li {
+        .sub-techniques div {
+            padding: 5px;
+            cursor: pointer;
+        }
+        .sub-techniques div:hover {
+            background-color: #ddd;
+        }
+        .sub-selected {
+            background-color: #d3d3d3 !important;
+        }
+        .pizza-list {
+            margin-top: 20px;
+        }
+        .pizza-list-item {
             cursor: pointer;
             margin-bottom: 10px;
         }
-        .pizza-list li:hover {
+        .pizza-list-item:hover {
             text-decoration: underline;
         }
     </style>
@@ -55,32 +70,27 @@
 <body>
     <div class="container">
         <h1 class="my-4 text-center">Composez votre pizza</h1>
-        <div class="row">
-            <div class="col-md-6">
-                <h3>Liste des Pizzas</h3>
-                <ul class="pizza-list" id="pizzaList">
-                    <!-- Les pizzas seront générées dynamiquement ici -->
-                </ul>
-            </div>
-            <div class="col-md-6">
-                <h3>Tableau de Sélection</h3>
-                <div class="table-responsive">
-                    <table id="pizzaTable" class="table table-bordered matrix">
-                        <thead>
-                            <tr id="tableHeaders">
-                                <!-- Les en-têtes de colonnes seront générés dynamiquement ici -->
-                            </tr>
-                        </thead>
-                        <tbody id="tableBody">
-                            <!-- Les lignes de la matrice seront générées dynamiquement ici -->
-                        </tbody>
-                    </table>
-                </div>
-                <div class="result">
-                    <h3>Résultat</h3>
-                    <p id="pizzaName" class="mt-3"></p>
-                </div>
-            </div>
+        <div class="table-responsive">
+            <table id="pizzaTable" class="table table-bordered matrix">
+                <thead>
+                    <tr id="tableHeaders">
+                        <!-- Les en-têtes de colonnes seront générés dynamiquement ici -->
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Les lignes de la matrice seront générées dynamiquement ici -->
+                </tbody>
+            </table>
+        </div>
+        <div class="result">
+            <button type="button" class="btn btn-primary" onclick="getPizzaName()">Obtenir le nom de la pizza</button>
+            <p id="pizzaName" class="mt-3"></p>
+        </div>
+
+        <!-- Liste des pizzas disponibles -->
+        <div class="pizza-list">
+            <h2>Pizzas disponibles :</h2>
+            <ul id="pizzaList"></ul>
         </div>
     </div>
 
