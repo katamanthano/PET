@@ -3,15 +3,15 @@ fetch('pizza-data.json')
     .then(response => response.json())
     .then(data => {
         initializePizzaMatrix(data.pizzaOptions); // Initialiser la matrice de sélection de pizza avec les options
-        createPizzaList(data.pizzaCombos); // Créer la liste des pizzas disponibles
+        initializePizzaList(data.pizzaCombos); // Initialiser la liste des pizzas disponibles
     })
     .catch(error => console.error('Erreur lors du chargement des données de pizza :', error));
 
-// Fonction pour initialiser la matrice de sélection de pizza
+// Fonction pour initialiser la matrice de sélection de pizza avec les données JSON
 function initializePizzaMatrix(pizzaOptions) {
     const tableHeaders = document.getElementById('tableHeaders');
     const tableBody = document.getElementById('tableBody');
-    
+
     // Ajouter les en-têtes de colonnes (Pâte, Sauce, Toppings)
     Object.keys(pizzaOptions).forEach(option => {
         const th = document.createElement('th');
@@ -27,17 +27,20 @@ function initializePizzaMatrix(pizzaOptions) {
             const td = document.createElement('td');
             if (Array.isArray(options) && options[i]) {
                 td.textContent = options[i];
-                tr.appendChild(td);
+                // Ajouter un événement onclick pour sélectionner l'option
+                td.addEventListener('click', () => selectOption(Object.keys(pizzaOptions)[index], options[i], td));
             }
+            tr.appendChild(td);
         });
         tableBody.appendChild(tr);
     }
 }
 
-// Fonction pour créer la liste des pizzas disponibles
-function createPizzaList(pizzaCombos) {
+// Fonction pour initialiser la liste des pizzas disponibles
+function initializePizzaList(pizzaCombos) {
     const pizzaList = document.getElementById('pizzaList');
 
+    // Générer les éléments de la liste des pizzas disponibles
     Object.keys(pizzaCombos).forEach(combo => {
         const li = document.createElement('li');
         li.textContent = pizzaCombos[combo];
@@ -46,29 +49,35 @@ function createPizzaList(pizzaCombos) {
     });
 }
 
-// Fonction pour mettre en surbrillance les éléments correspondant à une pizza sélectionnée
+// Fonction pour mettre en surbrillance les ingrédients correspondant à une pizza sélectionnée
 function highlightPizzaCombo(combo) {
-    const pizzaTable = document.getElementById('pizzaTable');
-    const allCells = pizzaTable.getElementsByTagName('td');
-    
-    // Réinitialiser toutes les cellules
-    Array.from(allCells).forEach(cell => {
-        cell.classList.remove('selected');
-    });
+    const [pate, sauce, toppings] = combo.split('-');
 
-    // Sélectionner les cellules correspondant au combo de pizza
-    const comboParts = combo.split('-');
-    comboParts.forEach((part, index) => {
-        const category = Object.keys(pizzaData.pizzaOptions)[index];
-        const columnIndex = Object.keys(pizzaData.pizzaOptions).indexOf(category);
-        const rowIndex = pizzaData.pizzaOptions[category].indexOf(part);
-        
-        if (rowIndex !== -1) {
-            const cell = pizzaTable.rows[rowIndex].cells[columnIndex];
+    // Désélectionner toutes les cellules précédemment sélectionnées
+    const selectedCells = document.querySelectorAll('.selected');
+    selectedCells.forEach(cell => cell.classList.remove('selected'));
+
+    // Sélectionner les cellules correspondant à la pizza sélectionnée
+    const cells = document.querySelectorAll('td');
+    cells.forEach(cell => {
+        if (cell.textContent === pate || cell.textContent === sauce || cell.textContent === toppings) {
             cell.classList.add('selected');
         }
     });
 
-    // Afficher le nom de la pizza sélectionnée
-    document.getElementById("pizzaName").innerText = pizzaData.pizzaCombos[combo] || "Pizza inconnue";
+    // Afficher le nom de la pizza sélectionnée dans la section des résultats
+    document.getElementById('pizzaName').textContent = pizzaCombos[combo];
+}
+
+// Fonction pour sélectionner une option dans le tableau de sélection
+function selectOption(category, value, element) {
+    // Désélectionner la sélection précédente dans la même catégorie
+    const prevSelected = document.querySelector(`.selected[data-category="${category}"]`);
+    if (prevSelected) {
+        prevSelected.classList.remove('selected');
+        prevSelected.removeAttribute('data-category');
+    }
+    // Sélectionner la nouvelle option
+    element.classList.add('selected');
+    element.setAttribute('data-category', category);
 }
