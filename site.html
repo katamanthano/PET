@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrice Pizza</title>
+    <!-- Inclure Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+        .matrix {
+            margin: 20px 0;
+        }
+        .matrix th, .matrix td {
+            text-align: center;
+            cursor: pointer;
+        }
+        .matrix th {
+            background-color: #28a745;
+            color: white;
+        }
+        .matrix td {
+            padding: 15px;
+            transition: background-color 0.3s;
+            position: relative;
+        }
+        .matrix td:hover {
+            background-color: #f2f2f2;
+        }
+        .selected {
+            background-color: #d3d3d3 !important;
+        }
+        .result {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .sub-techniques {
+            display: none;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            z-index: 1;
+            margin-top: 10px;
+        }
+        .sub-techniques div {
+            padding: 5px;
+            cursor: pointer;
+        }
+        .sub-techniques div:hover {
+            background-color: #ddd;
+        }
+        .sub-selected {
+            background-color: #d3d3d3 !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-4 text-center">Composez votre pizza</h1>
+        <div class="table-responsive">
+            <table class="table table-bordered matrix">
+                <thead>
+                    <tr>
+                        <th>Pâte</th>
+                        <th>Sauce</th>
+                        <th>Toppings</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td onclick="selectOption('pate', 'farine normal', this)">Farine Normal</td>
+                        <td onclick="selectOption('sauce', 'tomate', this)">Tomate</td>
+                        <td>
+                            <span onclick="toggleSubTechniques(event, 'sub-champignons')">Champignons <button class="btn btn-sm btn-light" onclick="toggleSubTechniques(event, 'sub-champignons')">+</button></span>
+                            <div id="sub-champignons" class="sub-techniques">
+                                <div onclick="selectSubOption('toppings', 'champignons', 'cepe', event)">Cèpe</div>
+                                <div onclick="selectSubOption('toppings', 'champignons', 'girolle', event)">Girolle</div>
+                                <div onclick="selectSubOption('toppings', 'champignons', null, event)">Aucune</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td onclick="selectOption('pate', 'sarazin', this)">Sarazin</td>
+                        <td onclick="selectOption('sauce', 'creme fraiche', this)">Crème Fraîche</td>
+                        <td onclick="selectOption('toppings', 'mozza', this)">Mozzarella</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td onclick="selectOption('toppings', 'jambon', this)">Jambon</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="result">
+            <button type="button" class="btn btn-primary" onclick="getPizzaName()">Obtenir le nom de la pizza</button>
+            <p id="pizzaName" class="mt-3"></p>
+        </div>
+    </div>
+
+    <!-- Inclure Bootstrap JS et jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        let selectedOptions = {
+            pate: null,
+            sauce: null,
+            toppings: null,
+            subToppings: null
+        };
+
+        function selectOption(category, value, element) {
+            // Deselect previous selection in the same category
+            const prevSelected = document.querySelector(`td.selected[data-category="${category}"]`);
+            if (prevSelected) {
+                prevSelected.classList.remove('selected');
+                prevSelected.removeAttribute('data-category');
+            }
+            // Select new option
+            element.classList.add('selected');
+            element.setAttribute('data-category', category);
+            selectedOptions[category] = value;
+            selectedOptions.subToppings = null; // Reset sub-option if main option changes
+        }
+
+        function selectSubOption(category, value, subValue, event) {
+            event.stopPropagation();
+            const subSelected = document.querySelector(`.sub-techniques .sub-selected`);
+            if (subSelected) {
+                subSelected.classList.remove('sub-selected');
+            }
+            event.target.classList.add('sub-selected');
+            selectedOptions[category] = value;
+            selectedOptions.subToppings = subValue === 'null' ? null : subValue; // Handle the case when no sub-option is selected
+        }
+
+        function toggleSubTechniques(event, subTechId) {
+            event.stopPropagation();
+            const subTechniques = document.getElementById(subTechId);
+            subTechniques.style.display = subTechniques.style.display === "none" || !subTechniques.style.display ? "block" : "none";
+        }
+
+        const pizzaCombos = {
+            "farine normal-tomate-champignons-cepe": "Pizza Champignon Cèpe",
+            "farine normal-tomate-champignons-girolle": "Pizza Champignon Girolle",
+            "farine normal-tomate-champignons": "Pizza Champignon",
+            "farine normal-tomate-mozza": "Pizza Margherita",
+            "farine normal-tomate-jambon": "Pizza Prosciutto",
+            "farine normal-creme fraiche-champignons-cepe": "Pizza Crème Champignon Cèpe",
+            "farine normal-creme fraiche-champignons-girolle": "Pizza Crème Champignon Girolle",
+            "farine normal-creme fraiche-champignons": "Pizza Crème Champignon",
+            "farine normal-creme fraiche-mozza": "Pizza Crème Mozza",
+            "farine normal-creme fraiche-jambon": "Pizza Crème Jambon",
+            "sarazin-tomate-champignons-cepe": "Pizza Sarazin Champignon Cèpe",
+            "sarazin-tomate-champignons-girolle": "Pizza Sarazin Champignon Girolle",
+            "sarazin-tomate-champignons": "Pizza Sarazin Champignon",
+            "sarazin-tomate-mozza": "Pizza Sarazin Mozza",
+            "sarazin-tomate-jambon": "Pizza Sarazin Jambon",
+            "sarazin-creme fraiche-champignons-cepe": "Pizza Sarazin Crème Champignon Cèpe",
+            "sarazin-creme fraiche-champignons-girolle": "Pizza Sarazin Crème Champignon Girolle",
+            "sarazin-creme fraiche-champignons": "Pizza Sarazin Crème Champignon",
+            "sarazin-creme fraiche-mozza": "Pizza Sarazin Crème Mozza",
+            "sarazin-creme fraiche-jambon": "Pizza Sarazin Crème Jambon"
+        };
+
+        function getPizzaName() {
+            const { pate, sauce, toppings, subToppings } = selectedOptions;
+            let combo = `${pate}-${sauce}-${toppings}`;
+            if (subToppings) {
+                combo += `-${subToppings}`;
+            }
+
+            if (pate && sauce && toppings) {
+                const pizzaName = pizzaCombos[combo] || "Pizza inconnue";
+                document.getElementById("pizzaName").innerText = pizzaName;
+            } else {
+                document.getElementById("pizzaName").innerText = "Veuillez sélectionner une option pour chaque catégorie.";
+            }
+        }
+    </script>
+</body>
+</html>
