@@ -20,29 +20,8 @@
                         <th>Toppings</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td onclick="selectOption('pate', 'farine normal', this)">Farine Normal</td>
-                        <td onclick="selectOption('sauce', 'tomate', this)">Tomate</td>
-                        <td>
-                            <span onclick="toggleSubTechniques(event, 'sub-champignons')">Champignons <button class="btn btn-sm btn-light" onclick="toggleSubTechniques(event, 'sub-champignons')">+</button></span>
-                            <div id="sub-champignons" class="sub-techniques">
-                                <div onclick="selectSubOption('toppings', 'champignons', 'cepe', event)">Cèpe</div>
-                                <div onclick="selectSubOption('toppings', 'champignons', 'girolle', event)">Girolle</div>
-                                <div onclick="selectSubOption('toppings', 'champignons', null, event)">Aucune</div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td onclick="selectOption('pate', 'sarazin', this)">Sarazin</td>
-                        <td onclick="selectOption('sauce', 'creme fraiche', this)">Crème Fraîche</td>
-                        <td onclick="selectOption('toppings', 'mozza', this)">Mozzarella</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td onclick="selectOption('toppings', 'jambon', this)">Jambon</td>
-                    </tr>
+                <tbody id="matrixBody">
+                    <!-- Contenu généré par JavaScript -->
                 </tbody>
             </table>
         </div>
