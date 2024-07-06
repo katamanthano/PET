@@ -3,16 +3,15 @@ fetch('pizza-data.json')
     .then(response => response.json())
     .then(data => {
         initializePizzaMatrix(data.pizzaOptions); // Initialiser la matrice de sélection de pizza avec les options
-        window.pizzaCombos = data.pizzaCombos; // Assigner les combos de pizza à une variable globale
+        createPizzaList(data.pizzaCombos); // Créer la liste des pizzas disponibles
     })
     .catch(error => console.error('Erreur lors du chargement des données de pizza :', error));
 
-// Fonction pour initialiser la matrice de sélection de pizza avec les données JSON
+// Fonction pour initialiser la matrice de sélection de pizza
 function initializePizzaMatrix(pizzaOptions) {
     const tableHeaders = document.getElementById('tableHeaders');
     const tableBody = document.getElementById('tableBody');
-    const subTechniquesDiv = document.querySelector('.sub-techniques');
-
+    
     // Ajouter les en-têtes de colonnes (Pâte, Sauce, Toppings)
     Object.keys(pizzaOptions).forEach(option => {
         const th = document.createElement('th');
@@ -28,78 +27,48 @@ function initializePizzaMatrix(pizzaOptions) {
             const td = document.createElement('td');
             if (Array.isArray(options) && options[i]) {
                 td.textContent = options[i];
-                // Ajouter un événement onclick pour sélectionner l'option
-                td.addEventListener('click', () => selectOption(Object.keys(pizzaOptions)[index], options[i], td));
+                tr.appendChild(td);
             }
-            tr.appendChild(td);
         });
         tableBody.appendChild(tr);
     }
-
-    // Fonction pour sélectionner une option
-    function selectOption(category, value, element) {
-        // Désélectionner la sélection précédente dans la même catégorie
-        const prevSelected = document.querySelector(`.selected[data-category="${category}"]`);
-        if (prevSelected) {
-            prevSelected.classList.remove('selected');
-            prevSelected.removeAttribute('data-category');
-        }
-        // Sélectionner la nouvelle option
-        element.classList.add('selected');
-        element.setAttribute('data-category', category);
-        selectedOptions[category] = value;
-
-        // Afficher les sous-techniques si elles existent pour la catégorie sélectionnée
-        subTechniquesDiv.innerHTML = ''; // Nettoyer les anciennes sous-techniques
-        if (category === 'toppings' && value === 'Champignons') {
-            subTechniquesDiv.style.display = 'block'; // Afficher le div des sous-techniques
-            // Afficher les sous-techniques pour Champignons
-            const subTechniquesArray = pizzaOptions.subTechniques.Champignons;
-            subTechniquesArray.forEach(sub => {
-                const div = document.createElement('div');
-                div.textContent = sub;
-                // Ajouter un événement onclick pour sélectionner la sous-technique
-                div.addEventListener('click', () => selectSubTechnique('Champignons', sub, div));
-                subTechniquesDiv.appendChild(div);
-            });
-        } else {
-            subTechniquesDiv.style.display = 'none'; // Cacher le div des sous-techniques
-            selectedOptions.subToppings = null; // Réinitialiser la sous-option si l'option principale change
-        }
-    }
-
-    // Fonction pour sélectionner une sous-technique
-    function selectSubTechnique(technique, subTechnique, element) {
-        // Désélectionner la sélection précédente dans la même catégorie
-        const prevSelected = document.querySelector(`.sub-selected[data-category="${technique}"]`);
-        if (prevSelected) {
-            prevSelected.classList.remove('sub-selected');
-        }
-        // Sélectionner la nouvelle sous-technique
-        element.classList.add('sub-selected');
-        selectedOptions.subToppings = subTechnique;
-    }
 }
 
-// Objets pour stocker les options sélectionnées
-let selectedOptions = {
-    pate: null,
-    sauce: null,
-    toppings: null,
-    subToppings: null
-};
+// Fonction pour créer la liste des pizzas disponibles
+function createPizzaList(pizzaCombos) {
+    const pizzaList = document.getElementById('pizzaList');
 
-// Fonction pour obtenir le nom de la pizza sélectionnée
-function getPizzaName() {
-    const { pate, sauce, toppings, subToppings } = selectedOptions;
-    if (pate && sauce && toppings) {
-        let combo = `${pate}-${sauce}-${toppings}`;
-        if (subToppings && subToppings !== 'null') {
-            combo += `-${subToppings}`;
+    Object.keys(pizzaCombos).forEach(combo => {
+        const li = document.createElement('li');
+        li.textContent = pizzaCombos[combo];
+        li.addEventListener('click', () => highlightPizzaCombo(combo));
+        pizzaList.appendChild(li);
+    });
+}
+
+// Fonction pour mettre en surbrillance les éléments correspondant à une pizza sélectionnée
+function highlightPizzaCombo(combo) {
+    const pizzaTable = document.getElementById('pizzaTable');
+    const allCells = pizzaTable.getElementsByTagName('td');
+    
+    // Réinitialiser toutes les cellules
+    Array.from(allCells).forEach(cell => {
+        cell.classList.remove('selected');
+    });
+
+    // Sélectionner les cellules correspondant au combo de pizza
+    const comboParts = combo.split('-');
+    comboParts.forEach((part, index) => {
+        const category = Object.keys(pizzaData.pizzaOptions)[index];
+        const columnIndex = Object.keys(pizzaData.pizzaOptions).indexOf(category);
+        const rowIndex = pizzaData.pizzaOptions[category].indexOf(part);
+        
+        if (rowIndex !== -1) {
+            const cell = pizzaTable.rows[rowIndex].cells[columnIndex];
+            cell.classList.add('selected');
         }
-        const pizzaName = window.pizzaCombos[combo] || "Pizza inconnue";
-        document.getElementById("pizzaName").innerText = pizzaName;
-    } else {
-        document.getElementById("pizzaName").innerText = "Veuillez sélectionner toutes les options";
-    }
+    });
+
+    // Afficher le nom de la pizza sélectionnée
+    document.getElementById("pizzaName").innerText = pizzaData.pizzaCombos[combo] || "Pizza inconnue";
 }
