@@ -7,41 +7,43 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function initializePizzaTable(data) {
     const tableBody = document.getElementById('tableBody');
+    const { pate, sauce, toppings } = data.pizzaOptions;
 
-    // Génération des lignes pour les options de base
-    data.pizzaOptions.forEach(option => {
+    // Assumons qu'il y a le même nombre d'éléments pour chaque catégorie pour simplifier
+    for (let i = 0; i < pate.length; i++) {
         const tr = document.createElement('tr');
-        Object.keys(option).forEach(key => {
-            const td = document.createElement('td');
-            td.textContent = option[key];
-            td.setAttribute('data-category', key);
-            td.onclick = () => toggleSubTechniques(option[key], key);
-            tr.appendChild(td);
-        });
+        
+        // Créer des colonnes pour chaque catégorie
+        createTd(pate[i], 'pate', tr);
+        createTd(sauce[i % sauce.length], 'sauce', tr); // Gérer le cas où il y a moins de sauces que de pâtes
+        createTd(toppings[i % toppings.length], 'toppings', tr, data.subTechniques); // Gérer les sous-techniques
+        
         tableBody.appendChild(tr);
-
-        // Générer les sous-techniques si disponibles
-        if (data.subTechniques && data.subTechniques[option.toppings]) {
-            data.subTechniques[option.toppings].forEach(sub => {
-                const subTr = document.createElement('tr');
-                subTr.classList.add('sub-technique');
-                const subTd = document.createElement('td');
-                subTd.colSpan = 3;
-                subTd.textContent = sub;
-                subTr.appendChild(subTd);
-                tableBody.appendChild(subTr);
-            });
-        }
-    });
+    }
 }
 
-function toggleSubTechniques(selectedOption, category) {
-    if (category === 'toppings') { // Seulement pour les toppings par exemple
-        const rows = Array.from(document.querySelectorAll('.sub-technique'));
-        rows.forEach(row => {
-            if (row.previousElementSibling.querySelector('td[data-category="toppings"]').textContent === selectedOption) {
-                row.style.display = row.style.display === 'none' ? 'table-row' : 'none';
-            }
-        });
+function createTd(text, category, tr, subTechniques) {
+    const td = document.createElement('td');
+    td.textContent = text;
+    td.setAttribute('data-category', category);
+    td.onclick = function() { toggleSubTechniques(text, category, subTechniques); };
+    tr.appendChild(td);
+    
+    // Gestion des sous-techniques directement sous les options de toppings
+    if (category === 'toppings' && subTechniques && subTechniques[text]) {
+        const subTr = document.createElement('tr');
+        subTr.style.display = 'none'; // Commencer caché
+        const subTd = document.createElement('td');
+        subTd.colSpan = 3;
+        subTd.textContent = subTechniques[text].join(", ");
+        subTr.appendChild(subTd);
+        tr.after(subTr); // Placer directement après la ligne de la technique principale
+        td.onclick = function() {
+            subTr.style.display = subTr.style.display === 'none' ? '' : 'none';
+        };
     }
+}
+
+function toggleSubTechniques(selectedOption, category, subTechniques) {
+    // Cette fonction peut être adaptée si nécessaire pour une gestion plus complexe
 }
