@@ -66,6 +66,7 @@ function initializePizzaMatrix(pizzaOptions) {
             subTechniquesDiv.style.display = 'none'; // Cacher le div des sous-techniques
             selectedOptions.subToppings = null; // Réinitialiser la sous-option si l'option principale change
         }
+        
         // Mettre à jour dynamiquement le nom de la pizza
         getPizzaName();
     }
