@@ -10,7 +10,6 @@
     "pizzaCombos": {
         "Farine Normale-Tomate-Mozzarella": "Pizza Margherita",
         "Farine Normale-Tomate-Jambon": "Pizza Prosciutto",
-        "Farine Normale-Tomate-Champignons-Girolle": "Pizza Champignon Girolle",
-        // Ajouter d'autres combos de pizza ici
+        "Farine Normale-Tomate-Champignons-Girolle": "Pizza Champignon Girolle"
     }
 }
