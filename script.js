@@ -1,3 +1,41 @@
+// Charger les options de pizza et les combos à partir du fichier JSON
+fetch('pizza-data.json')
+    .then(response => response.json())
+    .then(data => {
+        initializePizzaMatrix(data.pizzaOptions); // Initialiser la matrice de sélection de pizza avec les options
+        window.pizzaCombos = data.pizzaCombos; // Assigner les combos de pizza à une variable globale
+    })
+    .catch(error => console.error('Erreur lors du chargement des données de pizza :', error));
+
+// Fonction pour initialiser la matrice de sélection de pizza avec les données JSON
+function initializePizzaMatrix(pizzaOptions) {
+    const tableHeaders = document.getElementById('tableHeaders');
+    const tableBody = document.getElementById('tableBody');
+
+    // Ajouter les en-têtes de colonnes (Pâte, Sauce, Toppings)
+    Object.keys(pizzaOptions).forEach(option => {
+        const th = document.createElement('th');
+        th.textContent = option.charAt(0).toUpperCase() + option.slice(1); // Mettre la première lettre en majuscule
+        tableHeaders.appendChild(th);
+    });
+
+    // Générer les lignes pour les options disponibles
+    const maxOptions = Math.max(...Object.values(pizzaOptions).map(opt => Array.isArray(opt) ? opt.length : 0));
+    for (let i = 0; i < maxOptions; i++) {
+        const tr = document.createElement('tr');
+        Object.values(pizzaOptions).forEach(options => {
+            const td = document.createElement('td');
+            if (Array.isArray(options) && options[i]) {
+                td.textContent = options[i];
+                td.setAttribute('onclick', `selectOption('${Object.keys(pizzaOptions)[Object.values(pizzaOptions).indexOf(options)]}', '${options[i]}', this)`);
+            }
+            tr.appendChild(td);
+        });
+        tableBody.appendChild(tr);
+    }
+}
+
+// Objets pour stocker les options sélectionnées
 let selectedOptions = {
     pate: null,
     sauce: null,
@@ -5,63 +43,10 @@ let selectedOptions = {
     subToppings: null
 };
 
-// Fonction pour charger et traiter les données JSON
-function loadPizzaData() {
-    fetch('pizza_data.json')
-        .then(response => response.json())
-        .then(data => {
-            // Appeler des fonctions pour générer les en-têtes et options dans le tableau
-            generateTableHeaders(data);
-            generatePizzaOptions(data);
-        })
-        .catch(error => console.error('Erreur lors du chargement du fichier JSON', error));
-}
-
-// Fonction pour générer les en-têtes du tableau à partir des données JSON
-function generateTableHeaders(data) {
-    const thead = document.getElementById('pizzaOptionsHeader');
-    const headerRow = document.createElement('tr');
-
-    // Générer les en-têtes pour Pâte, Sauce et Toppings
-    data.tactiques.forEach(tactique => {
-        tactique.techniques.forEach(technique => {
-            Object.keys(technique).forEach(key => {
-                const th = document.createElement('th');
-                th.innerText = key.charAt(0).toUpperCase() + key.slice(1); // Mettre la première lettre en majuscule
-                headerRow.appendChild(th);
-            });
-        });
-    });
-
-    thead.appendChild(headerRow);
-}
-
-// Fonction pour générer les options de pizza à partir des données JSON
-function generatePizzaOptions(data) {
-    const tbody = document.getElementById('pizzaOptionsBody');
-    tbody.innerHTML = ''; // Nettoyer le contenu existant
-
-    data.tactiques.forEach(tactique => {
-        tactique.techniques.forEach(technique => {
-            const row = document.createElement('tr');
-
-            // Générer les options pour Pâte, Sauce et Toppings
-            Object.values(technique).forEach(value => {
-                const optionCell = document.createElement('td');
-                optionCell.innerText = value;
-                optionCell.setAttribute('onclick', `selectOption('${Object.keys(technique)[0]}', '${value}', this)`);
-                row.appendChild(optionCell);
-            });
-
-            tbody.appendChild(row);
-        });
-    });
-}
-
 // Fonction pour sélectionner une option
 function selectOption(category, value, element) {
     // Désélectionner la sélection précédente dans la même catégorie
-    const prevSelected = document.querySelector(`td.selected[data-category="${category}"]`);
+    const prevSelected = document.querySelector(`.selected[data-category="${category}"]`);
     if (prevSelected) {
         prevSelected.classList.remove('selected');
         prevSelected.removeAttribute('data-category');
@@ -73,22 +58,17 @@ function selectOption(category, value, element) {
     selectedOptions.subToppings = null; // Réinitialiser la sous-option si l'option principale change
 }
 
-// Fonction pour obtenir le nom de la pizza en fonction des options sélectionnées
+// Fonction pour obtenir le nom de la pizza sélectionnée
 function getPizzaName() {
     const { pate, sauce, toppings, subToppings } = selectedOptions;
-    let combo = `${pate}-${sauce}-${toppings}`;
-    if (subToppings) {
-        combo += `-${subToppings}`;
-    }
-
     if (pate && sauce && toppings) {
-        // Remplacez ceci par la logique pour obtenir le nom de la pizza à partir du fichier JSON
-        const pizzaName = "Pizza correspondante"; // Logique à mettre à jour
+        const combo = `${pate}-${sauce}-${toppings}`;
+        if (subToppings && subToppings !== 'null') {
+            combo += `-${subToppings}`;
+        }
+        const pizzaName = window.pizzaCombos[combo] || "Pizza inconnue";
         document.getElementById("pizzaName").innerText = pizzaName;
     } else {
         document.getElementById("pizzaName").innerText = "Veuillez sélectionner une option pour chaque catégorie.";
     }
 }
-
-// Charger les données JSON au chargement de la page
-document.addEventListener('DOMContentLoaded', loadPizzaData);
