@@ -48,10 +48,11 @@ function initializePizzaMatrix(pizzaOptions) {
         element.classList.add('selected');
         element.setAttribute('data-category', category);
         selectedOptions[category] = value;
-        
+
         // Afficher les sous-techniques si elles existent pour la catégorie sélectionnée
         subTechniquesDiv.innerHTML = ''; // Nettoyer les anciennes sous-techniques
         if (category === 'toppings' && value === 'Champignons') {
+            subTechniquesDiv.style.display = 'block'; // Afficher le div des sous-techniques
             // Afficher les sous-techniques pour Champignons
             const subTechniquesArray = pizzaOptions.subTechniques.Champignons;
             subTechniquesArray.forEach(sub => {
@@ -62,9 +63,11 @@ function initializePizzaMatrix(pizzaOptions) {
                 subTechniquesDiv.appendChild(div);
             });
         } else {
-            // Cacher les sous-techniques si aucune n'est sélectionnée ou si la catégorie ne nécessite pas de sous-techniques
+            subTechniquesDiv.style.display = 'none'; // Cacher le div des sous-techniques
             selectedOptions.subToppings = null; // Réinitialiser la sous-option si l'option principale change
         }
+        // Mettre à jour dynamiquement le nom de la pizza
+        getPizzaName();
     }
 
     // Fonction pour sélectionner une sous-technique
@@ -77,6 +80,9 @@ function initializePizzaMatrix(pizzaOptions) {
         // Sélectionner la nouvelle sous-technique
         element.classList.add('sub-selected');
         selectedOptions.subToppings = subTechnique;
+
+        // Mettre à jour dynamiquement le nom de la pizza
+        getPizzaName();
     }
 }
 
@@ -92,13 +98,13 @@ let selectedOptions = {
 function getPizzaName() {
     const { pate, sauce, toppings, subToppings } = selectedOptions;
     if (pate && sauce && toppings) {
-        const combo = `${pate}-${sauce}-${toppings}`;
+        let combo = `${pate}-${sauce}-${toppings}`;
         if (subToppings && subToppings !== 'null') {
             combo += `-${subToppings}`;
         }
         const pizzaName = window.pizzaCombos[combo] || "Pizza inconnue";
         document.getElementById("pizzaName").innerText = pizzaName;
     } else {
-        document.getElementById("pizzaName").innerText = "Veuillez sélectionner une option pour chaque catégorie.";
+        document.getElementById("pizzaName").innerText = "Veuillez sélectionner toutes les options";
     }
 }
