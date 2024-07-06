@@ -1,31 +1,16 @@
 {
-    "tactiques": [
-        {
-            "pate": ["farine normal", "farine t50", "farine sarazin"]
-        },
-        {
-            "sauce": ["tomate", "creme fraiche"]
-        },
-        {
-            "toppings": ["champignons", "mozza", "jambon"]
+    "pizzaOptions": {
+        "pate": ["Farine Normale", "Farine T50", "Farine Sarazin"],
+        "sauce": ["Tomate", "Crème Fraîche"],
+        "toppings": ["Champignons", "Mozzarella", "Jambon"],
+        "subTechniques": {
+            "Champignons": ["Girolle", "Cèpe", "Aucune"]
         }
-    ],
-    "sub-techniques": {
-        "champignons": ["girolle", "cepe"]
     },
-    "combos": [
-        {
-            "pate": "farine normal",
-            "sauce": "tomate",
-            "toppings": "mozza",
-            "name": "Pizza Margherita"
-        },
-        {
-            "pate": "farine normal",
-            "sauce": "tomate",
-            "toppings": "jambon",
-            "name": "Pizza Prosciutto"
-        }
-        // Ajoutez d'autres combos selon vos besoins
-    ]
+    "pizzaCombos": {
+        "Farine Normale-Tomate-Mozzarella": "Pizza Margherita",
+        "Farine Normale-Tomate-Jambon": "Pizza Prosciutto",
+        "Farine Normale-Tomate-Champignons-Girolle": "Pizza Champignon Girolle",
+        // Ajouter d'autres combos de pizza ici
+    }
 }
