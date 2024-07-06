@@ -5,8 +5,8 @@
             "sauce": "tomate",
             "toppings": "champignons",
             "subToppings": {
-                "cepe": "Pizza Champignon Cèpe",
-                "girolle": "Pizza Champignon Girolle"
+                "cepe": "Cèpe",
+                "girolle": "Girolle"
             }
         },
         {
@@ -26,8 +26,8 @@
             "sauce": "creme fraiche",
             "toppings": "champignons",
             "subToppings": {
-                "cepe": "Pizza Crème Champignon Cèpe",
-                "girolle": "Pizza Crème Champignon Girolle"
+                "cepe": "Crème Cèpe",
+                "girolle": "Crème Girolle"
             }
         },
         {
@@ -43,46 +43,13 @@
             "name": "Pizza Crème Jambon"
         },
         {
-            "pate": "sarazin",
+            "pate": "farine T50",
             "sauce": "tomate",
             "toppings": "champignons",
             "subToppings": {
-                "cepe": "Pizza Sarazin Champignon Cèpe",
-                "girolle": "Pizza Sarazin Champignon Girolle"
+                "cepe": "Cèpe Farine T50",
+                "girolle": "Girolle Farine T50"
             }
-        },
-        {
-            "pate": "sarazin",
-            "sauce": "tomate",
-            "toppings": "mozza",
-            "name": "Pizza Sarazin Mozza"
-        },
-        {
-            "pate": "sarazin",
-            "sauce": "tomate",
-            "toppings": "jambon",
-            "name": "Pizza Sarazin Jambon"
-        },
-        {
-            "pate": "sarazin",
-            "sauce": "creme fraiche",
-            "toppings": "champignons",
-            "subToppings": {
-                "cepe": "Pizza Sarazin Crème Champignon Cèpe",
-                "girolle": "Pizza Sarazin Crème Champignon Girolle"
-            }
-        },
-        {
-            "pate": "sarazin",
-            "sauce": "creme fraiche",
-            "toppings": "mozza",
-            "name": "Pizza Sarazin Crème Mozza"
-        },
-        {
-            "pate": "sarazin",
-            "sauce": "creme fraiche",
-            "toppings": "jambon",
-            "name": "Pizza Sarazin Crème Jambon"
         }
     ]
 }
