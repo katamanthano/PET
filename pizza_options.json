@@ -1,14 +1,19 @@
 {
-    "combos": [
+    "tactiques": [
         {
-            "pate": "farine normal",
-            "sauce": "tomate",
-            "toppings": "champignons",
-            "subToppings": {
-                "cepe": "Cèpe",
-                "girolle": "Girolle"
-            }
+            "pate": ["farine normal", "farine t50", "farine sarazin"]
         },
+        {
+            "sauce": ["tomate", "creme fraiche"]
+        },
+        {
+            "toppings": ["champignons", "mozza", "jambon"]
+        }
+    ],
+    "sub-techniques": {
+        "champignons": ["girolle", "cepe"]
+    },
+    "combos": [
         {
             "pate": "farine normal",
             "sauce": "tomate",
@@ -20,36 +25,7 @@
             "sauce": "tomate",
             "toppings": "jambon",
             "name": "Pizza Prosciutto"
-        },
-        {
-            "pate": "farine normal",
-            "sauce": "creme fraiche",
-            "toppings": "champignons",
-            "subToppings": {
-                "cepe": "Crème Cèpe",
-                "girolle": "Crème Girolle"
-            }
-        },
-        {
-            "pate": "farine normal",
-            "sauce": "creme fraiche",
-            "toppings": "mozza",
-            "name": "Pizza Crème Mozza"
-        },
-        {
-            "pate": "farine normal",
-            "sauce": "creme fraiche",
-            "toppings": "jambon",
-            "name": "Pizza Crème Jambon"
-        },
-        {
-            "pate": "farine T50",
-            "sauce": "tomate",
-            "toppings": "champignons",
-            "subToppings": {
-                "cepe": "Cèpe Farine T50",
-                "girolle": "Girolle Farine T50"
-            }
         }
+        // Ajoutez d'autres combos selon vos besoins
     ]
 }
