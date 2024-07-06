@@ -19,30 +19,49 @@ function generateMatrix() {
     const tbody = document.getElementById('matrixBody');
     tbody.innerHTML = ''; // Nettoyer le contenu existant
 
-    // Récupérer toutes les options uniques de pâte, sauce et toppings
-    const pates = [...new Set(pizzaCombos.map(combo => combo.pate))];
-    const sauces = [...new Set(pizzaCombos.map(combo => combo.sauce))];
-    const toppings = [...new Set(pizzaCombos.map(combo => combo.toppings))];
+    // Utiliser un objet pour stocker les options uniques de pâte, sauce et toppings
+    const uniqueOptions = {
+        pate: new Set(),
+        sauce: new Set(),
+        toppings: new Set()
+    };
+
+    // Remplir l'objet des options uniques à partir des données JSON
+    pizzaCombos.forEach(combo => {
+        uniqueOptions.pate.add(combo.pate);
+        uniqueOptions.sauce.add(combo.sauce);
+        uniqueOptions.toppings.add(combo.toppings);
+    });
+
+    // Convertir les Sets en tableaux pour pouvoir les parcourir
+    const pates = Array.from(uniqueOptions.pate);
+    const sauces = Array.from(uniqueOptions.sauce);
+    const toppings = Array.from(uniqueOptions.toppings);
 
     // Générer les lignes de la matrice avec les options récupérées
     pates.forEach(pate => {
         sauces.forEach(sauce => {
             toppings.forEach(topping => {
+                // Filtrer les combos qui correspondent aux options actuelles
                 const matchingCombos = pizzaCombos.filter(combo => combo.pate === pate && combo.sauce === sauce && combo.toppings === topping);
-                const row = document.createElement('tr');
 
                 // Si au moins un combo correspondant est trouvé, créer la cellule de la matrice
                 if (matchingCombos.length > 0) {
+                    const row = document.createElement('tr');
+
+                    // Pâte
                     const pateCell = document.createElement('td');
                     pateCell.innerText = pate;
                     pateCell.setAttribute('onclick', `selectOption('pate', '${pate}', this)`);
                     row.appendChild(pateCell);
 
+                    // Sauce
                     const sauceCell = document.createElement('td');
                     sauceCell.innerText = sauce;
                     sauceCell.setAttribute('onclick', `selectOption('sauce', '${sauce}', this)`);
                     row.appendChild(sauceCell);
 
+                    // Toppings
                     const toppingsCell = document.createElement('td');
                     toppingsCell.innerText = topping;
 
