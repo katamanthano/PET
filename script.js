@@ -19,30 +19,72 @@ function generateMatrix() {
     const tbody = document.getElementById('matrixBody');
     tbody.innerHTML = ''; // Nettoyer le contenu existant
 
-    pizzaCombos.forEach(combo => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td onclick="selectOption('pate', '${combo.pate}', this)">${combo.pate}</td>
-            <td onclick="selectOption('sauce', '${combo.sauce}', this)">${combo.sauce}</td>
-            <td onclick="selectOption('toppings', '${combo.toppings}', this)">${combo.toppings}</td>
-        `;
-        tbody.appendChild(row);
+    // Récupérer toutes les options uniques de pâte, sauce et toppings
+    const pates = [...new Set(pizzaCombos.map(combo => combo.pate))];
+    const sauces = [...new Set(pizzaCombos.map(combo => combo.sauce))];
+    const toppings = [...new Set(pizzaCombos.map(combo => combo.toppings))];
 
-        // Ajouter les sous-options si elles existent
-        if (combo.subToppings) {
-            const subRow = document.createElement('tr');
-            subRow.style.display = 'none'; // Les sous-options sont cachées par défaut
-            subRow.innerHTML = `
-                <td colspan="3">
-                    <div class="sub-techniques">
-                        ${Object.keys(combo.subToppings).map(sub => `
-                            <div onclick="selectSubOption('toppings', '${combo.toppings}', '${sub}', event)">${sub}</div>
-                        `).join('')}
-                    </div>
-                </td>
-            `;
-            tbody.appendChild(subRow);
-        }
+    // Générer les lignes de la matrice avec les options récupérées
+    pates.forEach(pate => {
+        sauces.forEach(sauce => {
+            toppings.forEach(topping => {
+                const matchingCombos = pizzaCombos.filter(combo => combo.pate === pate && combo.sauce === sauce && combo.toppings === topping);
+                const row = document.createElement('tr');
+
+                // Si au moins un combo correspondant est trouvé, créer la cellule de la matrice
+                if (matchingCombos.length > 0) {
+                    const pateCell = document.createElement('td');
+                    pateCell.innerText = pate;
+                    pateCell.setAttribute('onclick', `selectOption('pate', '${pate}', this)`);
+                    row.appendChild(pateCell);
+
+                    const sauceCell = document.createElement('td');
+                    sauceCell.innerText = sauce;
+                    sauceCell.setAttribute('onclick', `selectOption('sauce', '${sauce}', this)`);
+                    row.appendChild(sauceCell);
+
+                    const toppingsCell = document.createElement('td');
+                    toppingsCell.innerText = topping;
+
+                    // Vérifier si ce combo a des sous-options
+                    if (matchingCombos.some(combo => combo.subToppings)) {
+                        const toggleButton = document.createElement('button');
+                        toggleButton.classList.add('btn', 'btn-sm', 'btn-light');
+                        toggleButton.innerText = '+';
+                        toggleButton.setAttribute('onclick', `toggleSubTechniques(event, '${pate}-${sauce}-${topping}')`);
+
+                        const span = document.createElement('span');
+                        span.innerText = `${topping} `;
+                        span.appendChild(toggleButton);
+                        toppingsCell.appendChild(span);
+
+                        const subTechniquesDiv = document.createElement('div');
+                        subTechniquesDiv.classList.add('sub-techniques');
+                        subTechniquesDiv.setAttribute('id', `${pate}-${sauce}-${topping}`);
+                        subTechniquesDiv.style.display = 'none'; // Cacher par défaut
+
+                        // Ajouter les sous-options pour ce combo
+                        matchingCombos.forEach(combo => {
+                            if (combo.subToppings) {
+                                Object.keys(combo.subToppings).forEach(sub => {
+                                    const subOptionDiv = document.createElement('div');
+                                    subOptionDiv.innerText = sub;
+                                    subOptionDiv.setAttribute('onclick', `selectSubOption('toppings', '${topping}', '${sub}', event)`);
+                                    subTechniquesDiv.appendChild(subOptionDiv);
+                                });
+                            }
+                        });
+
+                        toppingsCell.appendChild(subTechniquesDiv);
+                    } else {
+                        toppingsCell.setAttribute('onclick', `selectOption('toppings', '${topping}', this)`);
+                    }
+
+                    row.appendChild(toppingsCell);
+                    tbody.appendChild(row);
+                }
+            });
+        });
     });
 }
 
@@ -56,6 +98,11 @@ function selectOption(category, value, element) {
     element.setAttribute('data-category', category);
     selectedOptions[category] = value;
     selectedOptions.subToppings = null;
+
+    // Cacher toutes les sous-options lorsqu'une option principale est sélectionnée
+    document.querySelectorAll('.sub-techniques').forEach(div => {
+        div.style.display = 'none';
+    });
 }
 
 function selectSubOption(category, value, subValue, event) {
