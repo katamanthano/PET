@@ -6,22 +6,67 @@
     <title>Matrice Pizza</title>
     <!-- Inclure Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+        .matrix {
+            margin: 20px 0;
+        }
+        .matrix th, .matrix td {
+            text-align: center;
+            cursor: pointer;
+        }
+        .matrix th {
+            background-color: #28a745;
+            color: white;
+        }
+        .matrix td {
+            padding: 15px;
+            transition: background-color 0.3s;
+            position: relative;
+        }
+        .matrix td:hover {
+            background-color: #f2f2f2;
+        }
+        .selected {
+            background-color: #d3d3d3 !important;
+        }
+        .result {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .sub-techniques {
+            display: none;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            z-index: 1;
+            margin-top: 10px;
+        }
+        .sub-techniques div {
+            padding: 5px;
+            cursor: pointer;
+        }
+        .sub-techniques div:hover {
+            background-color: #ddd;
+        }
+        .sub-selected {
+            background-color: #d3d3d3 !important;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1 class="my-4 text-center">Composez votre pizza</h1>
         <div class="table-responsive">
             <table class="table table-bordered matrix">
-                <thead>
-                    <tr>
-                        <th>Pâte</th>
-                        <th>Sauce</th>
-                        <th>Toppings</th>
-                    </tr>
+                <thead id="pizzaOptionsHeader">
+                    <!-- En-tête généré dynamiquement par JavaScript -->
                 </thead>
-                <tbody id="matrixBody">
-                    <!-- Contenu généré par JavaScript -->
+                <tbody id="pizzaOptionsBody">
+                    <!-- Contenu généré dynamiquement par JavaScript -->
                 </tbody>
             </table>
         </div>
@@ -35,6 +80,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
     <script src="script.js"></script>
 </body>
 </html>
