@@ -2,7 +2,7 @@
     "pizzaOptions": {
         "pate": ["Farine Normale", "Farine T50", "Farine Sarazin"],
         "sauce": ["Tomate", "Crème Fraîche"],
-        "toppings": ["Champignons", "Mozzarella", "Jambon"],
+        "toppings": ["Champignons", "Mozzarella", "Jambon", "Ananas"],
         "subTechniques": {
             "Champignons": ["Girolle", "Cèpe", "Aucune"]
         }
@@ -11,5 +11,6 @@
         "Farine Normale-Tomate-Mozzarella": "Pizza Margherita",
         "Farine Normale-Tomate-Jambon": "Pizza Prosciutto",
         "Farine Normale-Tomate-Champignons-Girolle": "Pizza Champignon Girolle"
+        "Farine Normale-Tomate-Ananas": "Pizza Hawaienne"
     }
 }
