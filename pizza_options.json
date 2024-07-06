@@ -1,55 +1,88 @@
 {
-  "categories": [
-    {
-      "name": "pate",
-      "options": [
-        { "name": "farine normal" },
-        { "name": "sarazin" }
-      ]
-    },
-    {
-      "name": "sauce",
-      "options": [
-        { "name": "tomate" },
-        { "name": "creme fraiche" }
-      ]
-    },
-    {
-      "name": "toppings",
-      "options": [
+    "combos": [
         {
-          "name": "champignons",
-          "subOptions": [
-            { "name": "cepe" },
-            { "name": "girolle" },
-            { "name": "aucune" }
-          ]
+            "pate": "farine normal",
+            "sauce": "tomate",
+            "toppings": "champignons",
+            "subToppings": {
+                "cepe": "Pizza Champignon Cèpe",
+                "girolle": "Pizza Champignon Girolle"
+            }
         },
-        { "name": "mozza" },
-        { "name": "jambon" }
-      ]
-    }
-  ],
-  "combos": {
-    "farine normal-tomate-champignons-cepe": "Pizza Champignon Cèpe",
-    "farine normal-tomate-champignons-girolle": "Pizza Champignon Girolle",
-    "farine normal-tomate-champignons": "Pizza Champignon",
-    "farine normal-tomate-mozza": "Pizza Margherita",
-    "farine normal-tomate-jambon": "Pizza Prosciutto",
-    "farine normal-creme fraiche-champignons-cepe": "Pizza Crème Champignon Cèpe",
-    "farine normal-creme fraiche-champignons-girolle": "Pizza Crème Champignon Girolle",
-    "farine normal-creme fraiche-champignons": "Pizza Crème Champignon",
-    "farine normal-creme fraiche-mozza": "Pizza Crème Mozza",
-    "farine normal-creme fraiche-jambon": "Pizza Crème Jambon",
-    "sarazin-tomate-champignons-cepe": "Pizza Sarazin Champignon Cèpe",
-    "sarazin-tomate-champignons-girolle": "Pizza Sarazin Champignon Girolle",
-    "sarazin-tomate-champignons": "Pizza Sarazin Champignon",
-    "sarazin-tomate-mozza": "Pizza Sarazin Mozza",
-    "sarazin-tomate-jambon": "Pizza Sarazin Jambon",
-    "sarazin-creme fraiche-champignons-cepe": "Pizza Sarazin Crème Champignon Cèpe",
-    "sarazin-creme fraiche-champignons-girolle": "Pizza Sarazin Crème Champignon Girolle",
-    "sarazin-creme fraiche-champignons": "Pizza Sarazin Crème Champignon",
-    "sarazin-creme fraiche-mozza": "Pizza Sarazin Crème Mozza",
-    "sarazin-creme fraiche-jambon": "Pizza Sarazin Crème Jambon"
-  }
+        {
+            "pate": "farine normal",
+            "sauce": "tomate",
+            "toppings": "mozza",
+            "name": "Pizza Margherita"
+        },
+        {
+            "pate": "farine normal",
+            "sauce": "tomate",
+            "toppings": "jambon",
+            "name": "Pizza Prosciutto"
+        },
+        {
+            "pate": "farine normal",
+            "sauce": "creme fraiche",
+            "toppings": "champignons",
+            "subToppings": {
+                "cepe": "Pizza Crème Champignon Cèpe",
+                "girolle": "Pizza Crème Champignon Girolle"
+            }
+        },
+        {
+            "pate": "farine normal",
+            "sauce": "creme fraiche",
+            "toppings": "mozza",
+            "name": "Pizza Crème Mozza"
+        },
+        {
+            "pate": "farine normal",
+            "sauce": "creme fraiche",
+            "toppings": "jambon",
+            "name": "Pizza Crème Jambon"
+        },
+        {
+            "pate": "sarazin",
+            "sauce": "tomate",
+            "toppings": "champignons",
+            "subToppings": {
+                "cepe": "Pizza Sarazin Champignon Cèpe",
+                "girolle": "Pizza Sarazin Champignon Girolle"
+            }
+        },
+        {
+            "pate": "sarazin",
+            "sauce": "tomate",
+            "toppings": "mozza",
+            "name": "Pizza Sarazin Mozza"
+        },
+        {
+            "pate": "sarazin",
+            "sauce": "tomate",
+            "toppings": "jambon",
+            "name": "Pizza Sarazin Jambon"
+        },
+        {
+            "pate": "sarazin",
+            "sauce": "creme fraiche",
+            "toppings": "champignons",
+            "subToppings": {
+                "cepe": "Pizza Sarazin Crème Champignon Cèpe",
+                "girolle": "Pizza Sarazin Crème Champignon Girolle"
+            }
+        },
+        {
+            "pate": "sarazin",
+            "sauce": "creme fraiche",
+            "toppings": "mozza",
+            "name": "Pizza Sarazin Crème Mozza"
+        },
+        {
+            "pate": "sarazin",
+            "sauce": "creme fraiche",
+            "toppings": "jambon",
+            "name": "Pizza Sarazin Crème Jambon"
+        }
+    ]
 }
