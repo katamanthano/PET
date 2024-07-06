@@ -107,4 +107,35 @@ function initializePizzaMatrix(pizzaOptions) {
     // Fonction pour sélectionner une sous-technique
     function selectSubTechnique(technique, subTechnique, element) {
         // Désélectionner la sélection précédente dans la même catégorie
-        const prevSelected = document.querySelector(`.sub-selected
+        const prevSelected = document.querySelector(`.sub-selected[data-category="${technique}"]`);
+        if (prevSelected) {
+            prevSelected.classList.remove('sub-selected');
+        }
+        // Sélectionner la nouvelle sous-technique
+        element.classList.add('sub-selected');
+        window.selectedOptions.subToppings = subTechnique;
+    }
+}
+
+// Objets pour stocker les options sélectionnées
+window.selectedOptions = {
+    pate: null,
+    sauce: null,
+    toppings: null,
+    subToppings: null
+};
+
+// Fonction pour obtenir le nom de la pizza sélectionnée
+function getPizzaName() {
+    const { pate, sauce, toppings, subToppings } = window.selectedOptions;
+    if (pate && sauce && toppings) {
+        const combo = `${pate}-${sauce}-${toppings}`;
+        if (subToppings && subToppings !== 'null') {
+            combo += `-${subToppings}`;
+        }
+        const pizzaName = window.pizzaCombos[combo] || "Pizza inconnue";
+        document.getElementById("pizzaName").innerText = pizzaName;
+    } else {
+        document.getElementById("pizzaName").innerText = "Veuillez sélectionner une option pour chaque catégorie.";
+    }
+}
