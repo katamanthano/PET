@@ -1,0 +1,59 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    text-align: center;
+}
+
+.matrix {
+    margin: 20px 0;
+}
+
+.matrix th, .matrix td {
+    text-align: center;
+    cursor: pointer;
+}
+
+.matrix th {
+    background-color: #28a745;
+    color: white;
+}
+
+.matrix td {
+    padding: 15px;
+    transition: background-color 0.3s;
+    position: relative;
+}
+
+.matrix td:hover {
+    background-color: #f2f2f2;
+}
+
+.selected {
+    background-color: #d3d3d3 !important;
+}
+
+.result {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.sub-techniques {
+    display: none;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    z-index: 1;
+    margin-top: 10px;
+}
+
+.sub-techniques div {
+    padding: 5px;
+    cursor: pointer;
+}
+
+.sub-techniques div:hover {
+    background-color: #ddd;
+}
+
+.sub-selected {
+    background-color: #d3d3d3 !important;
+}
