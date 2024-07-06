@@ -55,11 +55,32 @@
         .sub-selected {
             background-color: #d3d3d3 !important;
         }
+        .pizza-list {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .pizza-list li {
+            margin: 0 10px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .pizza-list li:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1 class="my-4 text-center">Composez votre pizza</h1>
+        
+        <!-- Liste des pizzas disponibles -->
+        <ul class="pizza-list" id="pizzaList">
+            <!-- Les pizzas seront générées dynamiquement ici -->
+        </ul>
+        
         <div class="table-responsive">
             <table id="pizzaTable" class="table table-bordered matrix">
                 <thead>
@@ -73,7 +94,6 @@
             </table>
         </div>
         <div class="result">
-            <button type="button" class="btn btn-primary" onclick="getPizzaName()">Obtenir le nom de la pizza</button>
             <p id="pizzaName" class="mt-3"></p>
         </div>
     </div>
